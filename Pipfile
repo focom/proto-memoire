@@ -7,6 +7,7 @@ name = "pypi"
 pgmpy = "*"
 pylint = "*"
 "autopep8" = "*"
+pandas = "*"
 
 [dev-packages]
 
