@@ -10,3 +10,5 @@ Sinon avec pip faite:
 ```
 pip install -r requirements.txt
 ```
+## To install tkinter
+on fedora : sudo dnf install python3-tkinter 
