@@ -25,18 +25,20 @@ def getScore(history, array):
 def generateRepartition(score):
     x = np.arange(-100, 100, 0.1)
     sig = np.sqrt(100)
+    sig=0.1
     mu = score  # Correspond a p(m) => esperance
+    mu = 0.44
 
-    x1 = np.arange(-1000, 50, 0.1)
-    x2 = np.arange(50, 70, 0.1)
-    x3 = np.arange(70, 90, 0.1)
-    x4 = np.arange(90, 1000, 0.1)
+    x1 = np.arange(-1000, 0.4, 0.001)
+    x2 = np.arange(0.4, 0.6, 0.001)
+    x3 = np.arange(0.6, 0.8, 0.001)
+    x4 = np.arange(0.8, 1000, 0.001)
     p1 = trapz(make_gauss(1, sig, mu)(x1), x1)
     p2 = trapz(make_gauss(1, sig, mu)(x2), x2)
     p3 = trapz(make_gauss(1, sig, mu)(x3), x3)
     p4 = trapz(make_gauss(1, sig, mu)(x4), x4)
     
-    print('p(0) == 1 si le veteur est nul sinon p(0) == 0')
+    print('p(0) == 1 si le vecteur est nul sinon p(0) == 0')
     print('p(1): '+str(p1))
     print('p(2): '+str(p2))
     print('p(3): '+str(p3))
@@ -44,27 +46,26 @@ def generateRepartition(score):
     print('Somme des probabilité : '+ str(p1 + p2 + p3 + p4))
 
 
-def printGaussian():
+def printGaussian(m):
     ax = plt.figure().add_subplot(1,1,1)
     x = np.arange(-100, 100, 0.1)
-    s = np.sqrt([100])
-    m = [30] # Correspond a p(m) => esperance
+    s = np.sqrt(100)
+    # m = [30] # Correspond a p(m) => esperance
     c = ['b']
 
-    for sig, mu, color in zip(s, m, c):
-        gauss = make_gauss(1, sig, mu)(x)
-        ax.plot(x, gauss, color, linewidth=2)
+ 
+    gauss = make_gauss(1, s, m)(x)
+    ax.plot(x, gauss, c, linewidth=2)
 
     plt.xlim(-100, 100)
     plt.ylim(0, 1)
-    plt.legend(['0.2', '1.0', '5.0', '0.5'], loc='best')
+    plt.legend(['m='+str(m)+' s=sqrt(100)'], loc='best')
     plt.show()
 
 
 def main():
-    result = getScore(2, [2, 2])
+    result = getScore(1, [2,1,0,3])
     generateRepartition(result)
-    printGaussian()
-
+    # printGaussian(result)
 if __name__ == '__main__':
     main()

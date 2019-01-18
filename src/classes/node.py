@@ -7,8 +7,8 @@ test_model = BayesianModel([('rain', 'sprinkler'),('rain','wetGrass'),('sprinkle
 
 
 cpd_rain = TabularCPD(variable='rain', variable_card=2, values=[[0.2],[0.8]])
-cpd_wetGrass = TabularCPD(variable='wetGrass', variable_card=2, values=[[0,0.8,0.9,0.99],[1,0.2,0.1,0.01]], evidence=['rain','sprinkler'], evidence_card=[2, 2])
-cpd_sprinkler = TabularCPD(variable='sprinkler', variable_card=2, values=[[0.4,0.01],[0.6,0.99]],evidence=['rain'], evidence_card=[2])
+cpd_wetGrass = TabularCPD(variable='wetGrass', variable_card=2, values=[(0,0.8,0.9,0.99),(1,0.2,0.1,0.01)], evidence=['rain','sprinkler'], evidence_card=[2, 2])
+cpd_sprinkler = TabularCPD(variable='sprinkler', variable_card=2, values=[(0.4,0.01),(0.6,0.99)],evidence=['rain'], evidence_card=[2])
 
 
 test_model.add_cpds(cpd_rain,cpd_sprinkler,cpd_wetGrass)
@@ -18,14 +18,13 @@ test_model.check_model()
 
 # print('hello')
 
-
 test_infer = VariableElimination(test_model)
 
 q = test_infer.query(variables=['wetGrass'], evidence={'rain':1})
 result = q['wetGrass']
 string = str(q['wetGrass'])
-print(string)
-print(type(string))
+print(result.values[0])
+# print(type(string))
 
 
 

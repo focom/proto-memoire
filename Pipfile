@@ -10,6 +10,8 @@ pylint = "*"
 numpy = "*"
 matplotlib = "*"
 scipy = "*"
+pandas = "*"
+"neo4j" = "*"
 
 [dev-packages]
 
