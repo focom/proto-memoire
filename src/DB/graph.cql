@@ -3,16 +3,20 @@
 MATCH (n) DETACH DELETE n;
 
 
+// theme1 -> theme2
+// theme1 -> [1,2] | 1 -> [4,5] | 2 -> [6,7]
+// theme2 -> [3] | 3 -> [8,9]
+
 // First create Node
 // Theme
-CREATE (t1:Theme {name:'Syntax'}),(t2:Theme {name:'Homophone'}),
+CREATE (t1:Theme1 {name:'Syntax',grade:0}),(t2:Theme2 {name:'Homophone',grade:0}),
 //Level 1
-(cphrase:Chapitre {name:'Constituant de la phrase'}),(tphrase:Chapitre {name:'Types de phrase et accord du verbe'}),
-(homophone:Chapitre{name:'homophone'}),
+(cphrase:Chapitre {name:'Constituant de la phrase',grade:0,id_chap:'1'}),(tphrase:Chapitre {name:'Types de phrase et accord du verbe',grade:0,id_chap:'2'}),
+(homophone:Chapitre{name:'homophone',grade:0,id_chap:'3'}),
 //Level 2
-(Ceasy:Chapitre {name:'Contenus d\'apprentissage'}), (Chard:Chapitre {name:'Contenus d\'appronfondissement'}),
-(Tphrase:Chapitre {name:'Type de phrase'}), (conjugaison:Chapitre {name:'Contenus pour l\'accord du verbe'}),
-(omonyme:Chapitre {name:'Homonyme'}),(autre:Chapitre {name:'Autre Cas'}),
+(Ceasy:Chapitre {name:'Contenus d\'apprentissage',grade:0,id_chap:'4'}), (Chard:Chapitre {name:'Contenus d\'appronfondissement',grade:0},,id_chap:'5'),
+(Tphrase:Chapitre {name:'Type de phrase',grade:0,id_chap:'6'}), (conjugaison:Chapitre {name:'Contenus pour l\'accord du verbe',grade:0,id_chap:'7'}),
+(omonyme:Chapitre {name:'Homonyme',grade:0,id_chap:'8'}),(autre:Chapitre {name:'Autre Cas',grade:0,id_chap:'9'}),
 
 // Relation between chapter
 (t1)-[:ifMastered]->(t2),
