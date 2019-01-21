@@ -56,7 +56,7 @@ class Graph:
 
     def _historyNodeSetter(self, id_node, history):
         db = self.get_db()
-        query = f"MATCH (n:Chapitre) where n.id_node='{id_node}' set n.history=history"
+        query = f"MATCH (n:Chapitre) where n.id_node='{id_node}' set n.history={history}"
         print(query)
         db.run(query)
 
