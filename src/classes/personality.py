@@ -10,8 +10,9 @@ i = 0
 
 
 class Personality:
-    def __init__(self):
+    def __init__(self,student):
         self.i = 0
+        self.student = student
         self.score = {'philan':0,'social':0,'freeSpi':0,'real':0,'disrup':0,'joueur':0}
         self.t_philan = StringVar()
         self.t_social = StringVar()
@@ -19,6 +20,13 @@ class Personality:
         self.t_real = StringVar()
         self.t_disrup = StringVar()
         self.t_joueur = StringVar()
+        self.score_philan = StringVar()
+        self.score_social = StringVar()
+        self.score_freespi = StringVar()
+        self.score_real = StringVar()
+        self.score_disrup = StringVar()
+        self.score_joueur = StringVar()
+
 
     def calculatePersonality(self,mainFrame):
         for widget in mainFrame.winfo_children():
@@ -40,24 +48,18 @@ class Personality:
         Label(mainFrame,textvariable =self.t_disrup).grid(column=0, row=4, columnspan=3, rowspan=1)
         Label(mainFrame,textvariable =self.t_joueur).grid(column=0, row=5, columnspan=3, rowspan=1)
 
-        score_philan = StringVar()
-        score_social = StringVar()
-        score_freespi = StringVar()
-        score_real = StringVar()
-        score_disrup = StringVar()
-        score_joueur = StringVar()
 
-        in_philan = Spinbox(mainFrame,from_=0,to=7,increment=1,width=5, textvariable=score_philan)
+        in_philan = Spinbox(mainFrame,from_=0,to=7,increment=1,width=5, textvariable=self.score_philan)
         in_philan.grid(column=4, row=0, columnspan=1, rowspan=1)
-        in_social = Spinbox(mainFrame,from_=0,to=7,increment=1,width=5,textvariable=score_social)
+        in_social = Spinbox(mainFrame,from_=0,to=7,increment=1,width=5,textvariable=self.score_social)
         in_social.grid(column=4, row=1, columnspan=1, rowspan=1)
-        in_freeSpi = Spinbox(mainFrame,from_=0,to=7,increment=1,width=5,textvariable=score_freespi)
+        in_freeSpi = Spinbox(mainFrame,from_=0,to=7,increment=1,width=5,textvariable=self.score_freespi)
         in_freeSpi.grid(column=4, row=2, columnspan=1, rowspan=1)
-        in_real = Spinbox(mainFrame,from_=0,to=7,increment=1,width=5,textvariable=score_real)
+        in_real = Spinbox(mainFrame,from_=0,to=7,increment=1,width=5,textvariable=self.score_real)
         in_real.grid(column=4, row=3, columnspan=1, rowspan=1)
-        in_disrup = Spinbox(mainFrame,from_=0,to=7,increment=1,width=5,textvariable=score_disrup)
+        in_disrup = Spinbox(mainFrame,from_=0,to=7,increment=1,width=5,textvariable=self.score_disrup)
         in_disrup.grid(column=4, row=4, columnspan=1, rowspan=1)
-        in_joueur = Spinbox(mainFrame,from_=0,to=7,increment=1,width=5,textvariable=score_joueur)
+        in_joueur = Spinbox(mainFrame,from_=0,to=7,increment=1,width=5,textvariable=self.score_joueur)
         in_joueur.grid(column=4, row=5, columnspan=1, rowspan=1)
         
 
@@ -92,7 +94,19 @@ class Personality:
             self.t_real.set(q_realisateur[self.i])
             self.t_disrup.set(q_disrupteur[self.i])
             self.t_joueur.set(q_joueur[self.i])
+
+            self.score['philan'] += int(self.score_philan.get())
+            self.score['social'] += int(self.score_social.get())
+            self.score['freeSpi'] += int(self.score_freespi.get())
+            self.score['real'] += int(self.score_real.get())
+            self.score['disrup'] += int(self.score_disrup.get())
+            self.score['joueur'] += int(self.score_joueur.get())
+
             print('call is working')
             return 0
         else:
-            print('Done')
+            self.student.readPersonality(self.score)
+            # print('Done')
+
+if (__name__ == '__main__'):
+    print('lol')

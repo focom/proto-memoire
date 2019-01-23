@@ -1,5 +1,8 @@
 from neo4j import *
+import fileinput
 
+from DB.createGraph import createQuery
+# from createGraph import createQuery
 # driver = GraphDatabase.driver("bolt://localhost:11001", auth=("neo4j", "root"))
 
 # theme1 -> theme2
@@ -8,8 +11,9 @@ from neo4j import *
 
 
 class Graph:
-    def __init__(self, adress, user, password):
-        self.driver = GraphDatabase.driver(adress, auth=(user, password))
+    def __init__(self, student_name):
+        self.student_name = student_name
+        self.driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "root"))
 
     def get_db(self):
         return self.driver.session()
@@ -82,8 +86,17 @@ class Graph:
         with self.driver.session() as session:
             session.read_transaction(self.updateGraph)
 
+    def createStudentGraph(self):
+        query = createQuery(self.student_name)
+        db = self.get_db()
+        print('Nouveau apprenant crée')
+        db.run(query)
+        
+
 
 if (__name__ == '__main__'):
-    graph = Graph('bolt://localhost:7687', 'neo4j', 'root')
+    from createGraph import createQuery
+    graph = Graph('Pedro')
+    graph.createStudentGraph()
     # graph.getScoreNode({'id_node':'4'})
     print(graph.getScoreNode('4'))
