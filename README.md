@@ -21,7 +21,7 @@ pip install -r requirements.txt
 Tkinter est deja installer avec votre version de python sinon, installer la derniere version de python en cochant l'option tkinter
 #### Sur Ubuntu/Debian :
 ```
-sudo apt install python-tk
+sudo apt install python3-tk
 ```
 #### Sur CentOS/Fedora : 
 ```
