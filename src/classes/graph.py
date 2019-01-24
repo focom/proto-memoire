@@ -106,12 +106,14 @@ class Graph:
     
     def updateNode (self,parentNode,childNodes):
         parentNode_grade = self.getGradeNode(parentNode)
+        print(parentNode_grade)
         # parentNode_grade = self.getGradeNode(parentNode)
         grade_child = []
         for child in childNodes:
             grade_child.append(self.getGradeNode(child))
         print(grade_child)
         new_parent_score = Gauss.getScore(parentNode_grade,grade_child)
+        new_parent_score = Gauss.getGrade(new_parent_score)
         self.setGrade([parentNode,new_parent_score])
 
     def updateGraph(self):
@@ -121,10 +123,10 @@ class Graph:
 
         # there is 5 update to do following a certain order
         self.updateNode(3,[6,7])
-        # self.updateNode(4,[8,9])
-        # self.updateNode(5,[10,11])
-        # self.updateNode(1,[3,4])
-        # self.updateNode(2,[5])
+        self.updateNode(4,[8,9])
+        self.updateNode(5,[10,11])
+        self.updateNode(1,[3,4])
+        self.updateNode(2,[5])
 
     def selectExercise(self):
         grade1 = self.getGradeNode(1)
@@ -162,10 +164,10 @@ if (__name__ == '__main__'):
     sys.path.append('..')
     from createGraph import createQuery
     import helper.gauss as Gauss
-    graph = Graph('Pedro')
+    graph = Graph('Ancien')
     # graph.createStudentGraph()
-    # graph.setGrade([6,4])
-    # print(graph.getGradeNode(6))
-    # graph.updateGraph()
-    # print(graph.getGradeNode(3))
-    graph.getExerciseNode(7)
+    print(graph.getGradeNode(6))
+    graph.setGrade([6,3])
+    graph.updateGraph()
+    print(graph.getGradeNode(6))
+    # graph.getExerciseNode(7)

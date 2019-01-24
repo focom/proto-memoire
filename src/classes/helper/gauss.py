@@ -8,6 +8,8 @@ def make_gauss(N, sig, mu):
 
 
 def getScore(history, array):
+    print('history: ',history)
+    print('array: ',array)
     percentage = [0, 0.4, 0.6, 0.8, 1]
     importance = 1/len(array)
     totalScore = 0

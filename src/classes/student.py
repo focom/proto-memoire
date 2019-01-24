@@ -24,7 +24,9 @@ class Student:
     for widget in self.gui.winfo_children():
       widget.destroy()
     print (scores)
-    print('jaime la pizza')
+    self.main.mainMenu()
+
+    # print('jaime la pizza')
   # def askName(self):
   #   for widget in gui.winfo_children():
   #     widget.destroy()

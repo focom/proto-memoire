@@ -44,8 +44,11 @@ class Main:
     
     def endExercise(self,grade,id_node):
         print('Noeud: ',id_node,' Grade: ',grade)
+        self.student.graph.setGrade([id_node,grade])
         for widget in self.gui.winfo_children():
             widget.destroy()
+        Label(self.gui,text=f'Ton grade pour ce chapitre est : {grade}').pack()
+        Button(self.gui,text='Retour au menu principal', command= lambda: self.mainMenu()).pack()
 
 if ( __name__ == '__main__'):
    loop = Main()
