@@ -3,7 +3,8 @@ from classes.personality import *
 from classes.graph import *
 
 class Student:
-  def __init__ (self, name, new, gui):
+  def __init__ (self, name,main, new, gui):
+    self.main = main
     self.name = name
     self.gui = gui
     for widget in self.gui.winfo_children():
@@ -14,6 +15,10 @@ class Student:
       self.personality = Personality(self)
       perso_result = self.personality.calculatePersonality(gui)
       print(perso_result)
+    if(new == False):
+      self.graph = Graph(self.name)
+      self.main.mainMenu()
+
 
   def readPersonality (self,scores):
     for widget in self.gui.winfo_children():
@@ -24,5 +29,9 @@ class Student:
   #   for widget in gui.winfo_children():
   #     widget.destroy()
 
+  def mainMenu(self):
+    for widget in self.gui.winfo_children():
+      widget.destroy()
+    
 if __name__ == "__main__":
-  print('lol')
+  print('lol') 

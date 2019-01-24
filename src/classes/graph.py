@@ -1,13 +1,14 @@
-from neo4j import *
-import fileinput
-
-from DB.createGraph import createQuery
+if __name__ != '__main__':
+    from neo4j import *
+    import fileinput
+    import helper.gauss as Gauss 
+    from DB.createGraph import createQuery
 # from createGraph import createQuery
 # driver = GraphDatabase.driver("bolt://localhost:11001", auth=("neo4j", "root"))
 
 # theme1 -> theme2
-# theme1 -> [1,2] | 1 -> [4,5] | 2 -> [6,7]
-# theme2 -> [3] | 3 -> [8,9]
+# theme1 -> [3,4] | 3 -> [6,7] | 4 -> [8,9]
+# theme2 -> [5] | 5 -> [10,11]
 
 
 class Graph:
@@ -17,14 +18,36 @@ class Graph:
 
     def get_db(self):
         return self.driver.session()
-
-    def getScoreNode(self, id_node):
+    
+    def getExerciseNode(self,id_node):
         with self.driver.session() as session:
-            return session.read_transaction(self._scoreNode, id_node)
+            return session.read_transaction(self._ExerciseNode, id_node)
 
-    def _scoreNode(self, tx, id_node):
+    def _ExerciseNode(self, tx, id_node):
         db = self.get_db()
-        query = f"MATCH (n:Chapitre) where n.id_node='{id_node}' return n"
+        query = f"MATCH (n:Chapitre)<-[]-(e:Exercice) where n.id_node={id_node} return e limit 20"
+        print(query)
+        number = 0
+        instruction = []
+        question = []
+        correct = []
+        wrong = []
+        for record in tx.run(query):
+            number += 1
+            instruction.append(record[0]._properties['instruction'])
+            question.append(record[0]._properties['question'])
+            correct.append(record[0]._properties['answer'][0])
+            wrong.append(record[0]._properties['answer'][1])
+        print(instruction)
+        return (id_node,number,instruction,question,correct,wrong)
+
+    def getGradeNode(self, id_node):
+        with self.driver.session() as session:
+            return session.read_transaction(self._gradeNode, id_node)
+
+    def _gradeNode(self, tx, id_node):
+        db = self.get_db()
+        query = f"MATCH (n) where n.id_node={id_node} return n"
         print(query)
         result = db.run(query)
         for record in result:
@@ -34,9 +57,9 @@ class Graph:
         with self.driver.session() as session:
             return session.read_transaction(self._historyNode, id_node)
 
-    def _historyNode(self, id_node):
+    def _historyNode(self, tx, id_node):
         db = self.get_db()
-        query = f"MATCH (n:Chapitre) where n.id_node='{id_node}' return n"
+        query = f"MATCH (n) where n.id_node={id_node} return n"
         print(query)
         result = db.run(query)
         for record in result:
@@ -46,41 +69,27 @@ class Graph:
         with self.driver.session() as session:
             return session.read_transaction(self._weightNode, id_node)
 
-    def _weightNode(self, id_node):
+    def _weightNode(self, tx, id_node):
         db = self.get_db()
-        query = f"MATCH (n:Chapitre) where n.id_node='{id_node}' return n"
+        query = f"MATCH (n) where n.id_node={id_node} return n"
         print(query)
         result = db.run(query)
         for record in result:
             return (record[0]._properties['weight'])
 
-    def setHistory(self, id_node,history):
+    
+    # options -> [id_node,grade]
+    def setGrade(self,options):
         with self.driver.session() as session:
-            return session.read_transaction(self._historyNodeSetter, id_node,history)
+            return session.read_transaction(self._setGrade, options)
 
-    def _historyNodeSetter(self, id_node, history):
+    def _setGrade(self,tx,options):
         db = self.get_db()
-        query = f"MATCH (n:Chapitre) where n.id_node='{id_node}' set n.history={history}"
+        query = f"MATCH (n) WHERE n.id_node={options[0]} SET n.history=n.score SET n.grade={options[1]}"
         print(query)
         db.run(query)
 
-    def updateGraph(self, tx):
-        # Take care of small part of tree
-        # select 8 and 9 and apply to 3.
 
-        score8 = 0
-        score9 = 0
-        score3 = 0
-        history3 = 0
-
-        scoreSmall = [0, 0, 0]
-
-        for record in tx.run("MATCH (n:Chapitre) return n where n.id_chap=8"):
-            print(record[0]._properties['grade'])
-        for record in tx.run("MATCH (n:Chapitre) return n where n.id_chap=9"):
-            print(record[0]._properties['grade'])
-        for record in tx.run("MATCH (n:Chapitre) return n where n.id_chap=3"):
-            print(record[0]._properties['grade'])
 
     def runUpdateGraph(self):
         with self.driver.session() as session:
@@ -91,12 +100,72 @@ class Graph:
         db = self.get_db()
         print('Nouveau apprenant crée')
         db.run(query)
+
+
+    # Before Selecting best path
+    
+    def updateNode (self,parentNode,childNodes):
+        parentNode_grade = self.getGradeNode(parentNode)
+        # parentNode_grade = self.getGradeNode(parentNode)
+        grade_child = []
+        for child in childNodes:
+            grade_child.append(self.getGradeNode(child))
+        print(grade_child)
+        new_parent_score = Gauss.getScore(parentNode_grade,grade_child)
+        self.setGrade([parentNode,new_parent_score])
+
+    def updateGraph(self):
+        # theme1 -> theme2
+        # theme1 -> [3,4] | 3 -> [6,7] | 4 -> [8,9]
+        # theme2 -> [5] | 5 -> [10,11]
+
+        # there is 5 update to do following a certain order
+        self.updateNode(3,[6,7])
+        # self.updateNode(4,[8,9])
+        # self.updateNode(5,[10,11])
+        # self.updateNode(1,[3,4])
+        # self.updateNode(2,[5])
+
+    def selectExercise(self):
+        grade1 = self.getGradeNode(1)
+        if(grade1 != 4):
+            grade3 = self.getGradeNode(3)
+            grade4 = self.getGradeNode(4)
+            if(grade3 > grade4):
+                grade8 = self.getGradeNode(8)
+                grade9 = self.getGradeNode(9)
+                if(grade8 > grade9):
+                    return self.getExerciseNode(9)
+                else:
+                    return self.getExerciseNode(8)
+            else:
+                grade6 = self.getGradeNode(6)
+                grade7 = self.getGradeNode(7)
+                if(grade6 > grade7):
+                    return self.getExerciseNode(7)
+                else:
+                    return self.getExerciseNode(6)
+        else:
+            grade10 = self.getGradeNode(10)
+            grade11 = self.getGradeNode(11)
+            if(grade10>grade11):
+                return self.getExerciseNode(11)
+            else:
+                return self.getExerciseNode(10)
+
+
+
         
-
-
 if (__name__ == '__main__'):
+    import sys
+    from neo4j import GraphDatabase
+    sys.path.append('..')
     from createGraph import createQuery
+    import helper.gauss as Gauss
     graph = Graph('Pedro')
-    graph.createStudentGraph()
-    # graph.getScoreNode({'id_node':'4'})
-    print(graph.getScoreNode('4'))
+    # graph.createStudentGraph()
+    # graph.setGrade([6,4])
+    # print(graph.getGradeNode(6))
+    # graph.updateGraph()
+    # print(graph.getGradeNode(3))
+    graph.getExerciseNode(7)
