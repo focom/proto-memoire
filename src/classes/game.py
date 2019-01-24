@@ -74,16 +74,10 @@ class Game:
     
     # iterate on exercise
     self.iteration += 1
-    # Change text on screen
-    self.instruction.set(self.a_instruction[self.iteration])
-    self.question.set(self.a_question[self.iteration])
-    self.correct.set(self.a_correct[self.iteration])
-    self.false.set(self.a_wrong[self.iteration])
-    # Calculate time to answer
 
+    # Calculate time to answer
     
     if(self.iteration == self.number_exo):
-
       #si plus de positif
       if (self.nbCorrect > self.nbFalse):
         a = np.array(self.timesCorrect)
@@ -106,7 +100,12 @@ class Game:
           grade = 1
 
       # Quit exercise
+      print('end')
       self.main.endExercise(grade,self.id_node)
-
-
+      return 0
+        # Change text on screen
+    self.instruction.set(self.a_instruction[self.iteration])
+    self.question.set(self.a_question[self.iteration])
+    self.correct.set(self.a_correct[self.iteration])
+    self.false.set(self.a_wrong[self.iteration])
 

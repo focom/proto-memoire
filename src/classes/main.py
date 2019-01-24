@@ -37,12 +37,15 @@ class Main:
         Button(self.gui, text='S\'entrainer', command= lambda: self.train()).pack()
     
     def train(self):
+        self.student.graph.updateGraph()
         id_node, number, instruction, question, correct, wrong = self.student.graph.selectExercise()
         game = Game(self,instruction,question,correct,wrong,number,id_node)
         game.askExercises()
     
     def endExercise(self,grade,id_node):
         print('Noeud: ',id_node,' Grade: ',grade)
+        for widget in self.gui.winfo_children():
+            widget.destroy()
 
 if ( __name__ == '__main__'):
    loop = Main()
