@@ -61,10 +61,10 @@
   <div id="container">
     <style>
       #graph-container {
-        top: 100px;
-        bottom: 100px;
-        left: 100px;
-        right: 100px;
+        top: 50px;
+        bottom: 50px;
+        left: 50px;
+        right: 50px;
         position: absolute;
       }
     </style>
@@ -126,7 +126,11 @@
   // Instantiate sigma:
   s = new sigma({
     graph: g,
-    container: 'graph-container'
+    container: 'graph-container',
+    settings:{
+      sideMargin: 1,
+      defaultLabelSize:16,
+      labelThreshold:2}
   });
   </script>
 </body>
