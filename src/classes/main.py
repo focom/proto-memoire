@@ -3,6 +3,7 @@ from tkinter import *
 from classes.student import Student
 from classes.personality import Personality
 from classes.game import Game
+from classes.visualistation import Viz
 
 class Main:
     def __init__(self):
@@ -33,7 +34,7 @@ class Main:
     def mainMenu(self):
         for widget in self.gui.winfo_children():
             widget.destroy()
-        Button(self.gui, text='Visualiser',command= lambda: print('olo')).pack()
+        Button(self.gui, text='Visualiser',command= lambda: self.visu()).pack()
         Button(self.gui, text='S\'entrainer', command= lambda: self.train()).pack()
     
     def train(self):
@@ -49,6 +50,10 @@ class Main:
             widget.destroy()
         Label(self.gui,text=f'Ton grade pour ce chapitre est : {grade}').pack()
         Button(self.gui,text='Retour au menu principal', command= lambda: self.mainMenu()).pack()
+    
+    def visu(self):
+        self.viz = Viz(self.student.graph)
+        self.viz.visual()
 
 if ( __name__ == '__main__'):
    loop = Main()
