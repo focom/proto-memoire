@@ -1,4 +1,5 @@
 from tkinter import *
+import numpy as np
 
 q_philanthrope = ['Cela me rend heureux si je peux aider les autres.','J’aime aider les autres à s’orienter dans de nouvelles situations.','J’aime partager mes connaissances.','Le bien-être des autres est important pour moi.']
 q_socialiseur = ['Interagir avec les autres est important pour moi.','J’aime faire partie d’une équipe.','Il est important pour moi de sentir que je fais partie d’une communauté.','J’aime les activités de groupe.']
@@ -13,7 +14,8 @@ class Personality:
     def __init__(self,student):
         self.i = 0
         self.student = student
-        self.score = {'philan':0,'social':0,'freeSpi':0,'real':0,'disrup':0,'joueur':0}
+        # self.score = {'philan':0,'social':0,'freeSpi':0,'real':0,'disrup':0,'joueur':0}
+        self.score = []
         self.t_philan = StringVar()
         self.t_social = StringVar()
         self.t_freeSpi = StringVar()
@@ -95,17 +97,25 @@ class Personality:
             self.t_disrup.set(q_disrupteur[self.i])
             self.t_joueur.set(q_joueur[self.i])
 
-            self.score['philan'] += int(self.score_philan.get())
-            self.score['social'] += int(self.score_social.get())
-            self.score['freeSpi'] += int(self.score_freespi.get())
-            self.score['real'] += int(self.score_real.get())
-            self.score['disrup'] += int(self.score_disrup.get())
-            self.score['joueur'] += int(self.score_joueur.get())
+            self.score[0] += int(self.score_philan.get())
+            self.score[1] += int(self.score_social.get())
+            self.score[2] += int(self.score_freespi.get())
+            self.score[3] += int(self.score_real.get())
+            self.score[4] += int(self.score_disrup.get())
+            self.score[5] += int(self.score_joueur.get())
 
             print('call is working')
             return 0
         else:
-            self.student.readPersonality(self.score)
+            mechanic = 0
+            A = [[4,4,2,2,1,1],[0,1,0,4,1,4],[2,0,3,2,1,4]]
+            taste = np.dot(A,S)
+            max = np.amax(taste)
+            for i in range(0,len(taste)):
+                if(taste[i] == max):
+                    mechanic = i
+                    break
+            self.student.readPersonality(mechanic)
             # print('Done')
 
 if (__name__ == '__main__'):

@@ -4,21 +4,21 @@ class Viz:
 
   def __init__(self,graph):
     self.colors = []
-    for i in range(0,12):
+    for i in range(1,13):
       self.colors.append(self.getColor(graph.getGradeNode(i)))
 
 
   def getColor(self,grade):
     if (grade == 0):
-      return '#f8eeb4'
+      return '#999966'
     if (grade == 1):
-      return '#cfee91'
+      return '#cc0000'
     if (grade == 2):
-      return '#ff9000'
+      return '#ff6600'
     if (grade == 3):
-      return '#ffd400'
+      return '#ffff00'
     if (grade == 4):
-      return '#669999'
+      return '#00ff00'
 
   def visual(self):
     html = generateHTML(self.colors)

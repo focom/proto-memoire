@@ -20,10 +20,11 @@ class Student:
       self.main.mainMenu()
 
 
-  def readPersonality (self,scores):
+  def readPersonality (self,mechanic):
     for widget in self.gui.winfo_children():
       widget.destroy()
-    print (scores)
+    print ('Mechanic number :',mechanic)
+    self.mechanic = mechanic
     self.main.mainMenu()
 
     # print('jaime la pizza')

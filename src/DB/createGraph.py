@@ -3,7 +3,7 @@
 def createQuery(name):
     beginQuery = "CREATE (student:Student {name:" + f"'{name}'" +",personality:[2,3,10]}),"
     createQuery = beginQuery + """
-    (t1:Theme1 {name:"Syntax",grade:0,history:0,score:0,weight:0,id_node:1}),(t2:Theme2 {name:"Homophone",grade:0,history:0,score:0,weight:0,id_node:2}),
+    (t1:Chapitre {name:"Syntax",grade:0,history:0,score:0,weight:0,id_node:1}),(t2:Chapitre {name:"Homophone",grade:0,history:0,score:0,weight:0,id_node:2}),
     //Level 1
     (cphrase:Chapitre {name:"Constituant de la phrase",grade:0,id_node:3,history:0,score:0}),(tphrase:Chapitre {name:"Types de phrase et accord du verbe",grade:0,id_node:4,score:0,weight:0,history:0}),
     (homophone:Chapitre{name:"homophone",grade:0,id_node:5,history:0,score:0}),

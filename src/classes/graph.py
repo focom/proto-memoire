@@ -26,7 +26,7 @@ class Graph:
     def _ExerciseNode(self, tx, id_node):
         db = self.get_db()
         query = f"MATCH (n:Chapitre)<-[]-(e:Exercice) where n.id_node={id_node} return e limit 20"
-        print(query)
+        # print(query)
         number = 0
         instruction = []
         question = []
@@ -47,8 +47,8 @@ class Graph:
 
     def _gradeNode(self, tx, id_node):
         db = self.get_db()
-        query = f"MATCH (n) where n.id_node={id_node} return n"
-        print(query)
+        query = f"MATCH (s:Student) where s.name='{self.student_name}' match (s)-[:link*1..7]-(n:Chapitre) where n.id_node={id_node} return n;"
+        # print(query)
         result = db.run(query)
         for record in result:
             return (record[0]._properties['grade'])
@@ -59,8 +59,8 @@ class Graph:
 
     def _historyNode(self, tx, id_node):
         db = self.get_db()
-        query = f"MATCH (n) where n.id_node={id_node} return n"
-        print(query)
+        query = f"MATCH (s:Student) where s.name='{self.student_name}' match (s)-[:link*1..7]-(n:Chapitre) where n.id_node={id_node} return n;"
+        # print(query)
         result = db.run(query)
         for record in result:
             return (record[0]._properties['history'])
@@ -71,8 +71,8 @@ class Graph:
 
     def _weightNode(self, tx, id_node):
         db = self.get_db()
-        query = f"MATCH (n) where n.id_node={id_node} return n"
-        print(query)
+        query = f"MATCH (s:Student) where s.name='{self.student_name}' match (s)-[:link*1..7]-(n:Chapitre) where n.id_node={id_node} return n;"
+        # print(query)
         result = db.run(query)
         for record in result:
             return (record[0]._properties['weight'])
@@ -85,8 +85,8 @@ class Graph:
 
     def _setGrade(self,tx,options):
         db = self.get_db()
-        query = f"MATCH (n) WHERE n.id_node={options[0]} SET n.history=n.score SET n.grade={options[1]}"
-        print(query)
+        query = f"MATCH (s:Student) where s.name='{self.student_name}' match (s)-[:link*1..7]-(n:Chapitre) where n.id_node={options[0]} SET n.history=n.score SET n.grade={options[1]}"
+        # print(query)
         db.run(query)
 
 
@@ -106,6 +106,7 @@ class Graph:
     
     def updateNode (self,parentNode,childNodes):
         parentNode_grade = self.getGradeNode(parentNode)
+        print(f'Updating: {parentNode} with {childNodes}')
         print(parentNode_grade)
         # parentNode_grade = self.getGradeNode(parentNode)
         grade_child = []
@@ -114,6 +115,7 @@ class Graph:
         print(grade_child)
         new_parent_score = Gauss.getScore(parentNode_grade,grade_child)
         new_parent_score = Gauss.getGrade(new_parent_score)
+        print ('Grade parent ',parentNode,': ',new_parent_score,' Grade enfant: ',grade_child)
         self.setGrade([parentNode,new_parent_score])
 
     def updateGraph(self):
@@ -124,8 +126,8 @@ class Graph:
         # there is 5 update to do following a certain order
         self.updateNode(3,[6,7])
         self.updateNode(4,[8,9])
-        self.updateNode(5,[10,11])
         self.updateNode(1,[3,4])
+        self.updateNode(5,[10,11])
         self.updateNode(2,[5])
 
     def selectExercise(self):
@@ -158,16 +160,16 @@ class Graph:
 
 
         
-if (__name__ == '__main__'):
-    import sys
-    from neo4j import GraphDatabase
-    sys.path.append('..')
-    from createGraph import createQuery
-    import helper.gauss as Gauss
-    graph = Graph('Ancien')
-    # graph.createStudentGraph()
-    print(graph.getGradeNode(6))
-    graph.setGrade([6,3])
-    graph.updateGraph()
-    print(graph.getGradeNode(6))
-    # graph.getExerciseNode(7)
+# if (__name__ == '__main__'):
+#     import sys
+#     from neo4j import GraphDatabase
+#     sys.path.append('..')
+#     from createGraph import createQuery
+#     import helper.gauss as Gauss
+#     graph = Graph('Ancien')
+#     # graph.createStudentGraph()
+#     print(graph.getGradeNode(6))
+#     graph.setGrade([6,3])
+#     graph.updateGraph()
+#     print(graph.getGradeNode(6))
+#     # graph.getExerciseNode(7)

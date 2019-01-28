@@ -52,6 +52,7 @@ class Main:
         Button(self.gui,text='Retour au menu principal', command= lambda: self.mainMenu()).pack()
     
     def visu(self):
+        self.student.graph.updateGraph()
         self.viz = Viz(self.student.graph)
         self.viz.visual()
 

@@ -43,6 +43,11 @@ class Game:
     correct.grid(column=1,row=4,columnspan=2,rowspan=1)
     false.grid(column=3,row=4,columnspan=2,rowspan=1)
 
+    tips = Frame(self.gui,borderwidth=2,relief=GROOVE)
+    tips.grid(column=1, columnspan=4,row=6, rowspan=3)
+    # tips_label=Frame(tips,text='Essai du tips')
+    # tips_label.pack(padx=10,pady=10)
+
     self.instruction.set(self.a_instruction[self.iteration])
     self.question.set(self.a_question[self.iteration])
     self.correct.set(self.a_correct[self.iteration])

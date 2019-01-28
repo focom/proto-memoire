@@ -1,5 +1,6 @@
 
 def generateHTML(colors):
+    print(colors)
     node1 = f"""id: '1',
         label: 'Theme 1',
         x: 7,

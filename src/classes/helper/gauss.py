@@ -8,16 +8,18 @@ def make_gauss(N, sig, mu):
 
 
 def getScore(history, array):
+    return 0
     print('history: ',history)
     print('array: ',array)
     percentage = [0, 0.4, 0.6, 0.8, 1]
+    print('longuer array: ', len(array))
     importance = 1/len(array)
     totalScore = 0
     for score in array:
         temp = percentage[score] * importance
         totalScore += temp
-    s80 = totalScore * 80 / 100
-    s20 = percentage[history] * 20 / 100
+    s80 = totalScore * 0.8
+    s20 = percentage[history] * 0.2
     print('s80: '+str(s80))
     print('s20: '+str(s20))
     print('score du vecteur: '+ str(s80 + s20))
@@ -76,10 +78,10 @@ def getGrade(score):
     else:
         return 0
 
-def main():
-    result = getScore(1, [2,1,0,3])
-    print(result)
-    # generateRepartition(result)
-    # printGaussian(result)
-if __name__ == '__main__':
-    main()
+# def main():
+#     result = getScore(1, [2,1,0,3])
+#     print(result)
+#     # generateRepartition(result)
+#     # printGaussian(result)
+# if __name__ == '__main__':
+#     main()
