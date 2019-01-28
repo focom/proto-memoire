@@ -34,8 +34,8 @@ class Main:
     def mainMenu(self):
         for widget in self.gui.winfo_children():
             widget.destroy()
-        Button(self.gui, text='Visualiser',command= lambda: self.visu()).pack()
-        Button(self.gui, text='S\'entrainer', command= lambda: self.train()).pack()
+        Button(self.gui, text='Visualiser',command= lambda: self.visu()).pack(padx=10,pady=10)
+        Button(self.gui, text='S\'entrainer', command= lambda: self.train()).pack(padx=10,pady=10)
     
     def train(self):
         self.student.graph.updateGraph()
@@ -50,6 +50,20 @@ class Main:
             widget.destroy()
         Label(self.gui,text=f'Ton grade pour ce chapitre est : {grade}').pack()
         Button(self.gui,text='Retour au menu principal', command= lambda: self.mainMenu()).pack()
+        tips = Frame(self.gui,borderwidth=2,relief=GROOVE)
+        tips.pack(padx=10,pady=10)
+        tip_text = self.getGoodEnding()
+        tips_label=Label(tips,text=tip_text)
+        tips_label.pack(padx=10,pady=10)
+    
+    def getGoodEnding(self):
+        mecha = self.student.graph.getMechanic()
+        if(mecha == 0):
+            return 'Aide tes autres camarades à réussir !'
+        if(mecha == 1):
+            return '/!\ Tableau des scores /!\ '
+        if(mecha == 2):
+            return 'Discute avec le sage pour t\'aider dans ta quête'
     
     def visu(self):
         self.student.graph.updateGraph()
