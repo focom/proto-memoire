@@ -26,7 +26,8 @@ class Game:
     self.question = StringVar()
     self.correct = StringVar()
     self.false = StringVar()
-
+    self.tips = StringVar()
+    self.error_count = 0
   
   def askExercises(self):
     # efface l'ecran 
@@ -42,11 +43,6 @@ class Game:
     false = Button(self.gui,textvariable=self.false, command= lambda: self.stepInExercise(False))
     correct.grid(column=1,row=4,columnspan=2,rowspan=1)
     false.grid(column=3,row=4,columnspan=2,rowspan=1)
-
-    tips = Frame(self.gui,borderwidth=2,relief=GROOVE)
-    tips.grid(column=1, columnspan=4,row=6, rowspan=3)
-    # tips_label=Frame(tips,text='Essai du tips')
-    # tips_label.pack(padx=10,pady=10)
 
     self.instruction.set(self.a_instruction[self.iteration])
     self.question.set(self.a_question[self.iteration])
@@ -66,6 +62,24 @@ class Game:
 
     # Calcul du grade pour la session, fin de l'entrainement
 
+  def showTips(self):
+    tips = Frame(self.gui,borderwidth=2,relief=GROOVE)
+    tips.grid(column=1, columnspan=4,row=6, rowspan=3)
+    tips_label=Label(tips,textvariable=self.tips)
+    tips_label.pack(padx=10,pady=10)
+    self._getStudentTip()
+    Button(tips,text='OK',command=lambda:tips.destroy()).pack(padx=10,pady=10)
+    return 0
+
+  def _getStudentTip(self):
+    if (self.main.student.mechanic == 0):
+      self.tips.set('N\'hesite pas a parler de cet exercice avec tes camarades')
+    if(self.main.student.mechanic == 1):
+      self.tips.set('Continue tes efforts, tu va rattraper le score des tes camarades')
+    if(self.main.student.mechanic == 2):
+      self.tips.set('<Marchant> Lit ce parchemin, il te sera utile')
+
+
   def stepInExercise(self,bool):
     # Save the time to answer 
     if(bool == True):
@@ -73,7 +87,11 @@ class Game:
       time_to_answer = time.time() - self.startTime
       self.timesCorrect.append(time_to_answer)
     else:
+      self.error_count += 1
       self.nbFalse += 1
+      if(self.error_count == 3):
+        self.showTips()
+        self.error_count = 0
       time_to_answer = time.time() - self.startTime
       self.timesWrong.append(time_to_answer)
     

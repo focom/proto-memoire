@@ -76,6 +76,28 @@ class Graph:
         result = db.run(query)
         for record in result:
             return (record[0]._properties['weight'])
+    
+    def saveMechanic(self,mechanic):
+        with self.driver.session() as session:
+            return session.read_transaction(self._savemechanic, mechanic)
+
+    def _savemechanic(self,tx,mechanic):
+        db = self.get_db()
+        query = f"MATCH (s:Student) where s.name='{self.student_name}' SET s.mechanic={mechanic};"
+        # print(query)
+        db.run(query)
+
+    def getMechanic(self):
+        with self.driver.session() as session:
+            return session.read_transaction(self._getMechanic)
+    
+    def _getMechanic(self,tx):
+        db = self.get_db()
+        query = f"MATCH (s:Student) where s.name='{self.student_name}' return s;"
+        # print(query)
+        result = db.run(query)
+        for record in result:
+            return (record[0]._properties['mechanic'])
 
     
     # options -> [id_node,grade]

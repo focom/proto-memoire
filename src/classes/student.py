@@ -17,6 +17,7 @@ class Student:
       print(perso_result)
     if(new == False):
       self.graph = Graph(self.name)
+      self.mechanic = self.graph.getMechanic()
       self.main.mainMenu()
 
 
@@ -25,6 +26,7 @@ class Student:
       widget.destroy()
     print ('Mechanic number :',mechanic)
     self.mechanic = mechanic
+    self.graph.saveMechanic(self.mechanic)
     self.main.mainMenu()
 
     # print('jaime la pizza')

@@ -15,7 +15,7 @@ class Personality:
         self.i = 0
         self.student = student
         # self.score = {'philan':0,'social':0,'freeSpi':0,'real':0,'disrup':0,'joueur':0}
-        self.score = []
+        self.score = [0,0,0,0,0,0]
         self.t_philan = StringVar()
         self.t_social = StringVar()
         self.t_freeSpi = StringVar()
@@ -97,19 +97,20 @@ class Personality:
             self.t_disrup.set(q_disrupteur[self.i])
             self.t_joueur.set(q_joueur[self.i])
 
-            self.score[0] += int(self.score_philan.get())
-            self.score[1] += int(self.score_social.get())
-            self.score[2] += int(self.score_freespi.get())
-            self.score[3] += int(self.score_real.get())
-            self.score[4] += int(self.score_disrup.get())
-            self.score[5] += int(self.score_joueur.get())
+            self.score[0] = self.score[0]+ int(self.score_philan.get())
+            self.score[1] = self.score[1]+ int(self.score_social.get())
+            self.score[2] = self.score[2]+ int(self.score_freespi.get())
+            self.score[3] = self.score[3]+ int(self.score_real.get())
+            self.score[4] = self.score[4]+ int(self.score_disrup.get())
+            self.score[5] = self.score[5]+ int(self.score_joueur.get())
 
             print('call is working')
             return 0
         else:
             mechanic = 0
             A = [[4,4,2,2,1,1],[0,1,0,4,1,4],[2,0,3,2,1,4]]
-            taste = np.dot(A,S)
+            print(self.score)
+            taste = np.dot(A,self.score)
             max = np.amax(taste)
             for i in range(0,len(taste)):
                 if(taste[i] == max):
