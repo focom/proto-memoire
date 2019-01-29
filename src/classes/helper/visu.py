@@ -140,6 +140,72 @@ def generateHTML(colors):
           position: absolute;
         }
       </style>
+              <div id="legend">
+            <div class="class">
+              <div class="color" id="_0"></div>
+              <span class="spanner">Graduation 0</span>
+            </div>
+            <div class="class">
+              <div class="color" id="_1"></div>
+              <span class="spanner">Graduation 1</span>
+            </div>
+            <div class="class">
+              <div class="color" id="_2"></div>
+              <span class="spanner">Graduation 2</span>
+            </div>
+            <div class="class">
+              <div class="color" id="_3"></div>
+              <span class="spanner">Graduation 3</span>
+            </div>
+            <div class="class">
+              <div class="color" id="_4"></div>
+              <span class="spanner">Graduation 4</span>
+            </div>
+        
+          </div>
+          <style>
+            body{
+              height: 100vh;
+              width: 100vw;
+            }
+            #legend{
+              display: flex;
+              flex-direction: column;
+              max-width: 20vw;
+            }
+            .class{
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-start;
+              margin-top: 10px;
+              border-bottom: 2px solid black;
+              max-width: 10vw;
+            }
+            .color {
+              width: 40px;
+              height: 20px;
+            }
+            #_0{
+              background-color: grey;
+            }
+            #_1{
+              background-color: red;
+            }
+            #_2{
+              background-color: yellow;
+            }
+            #_3{
+              background-color: orange;
+            }
+            #_4{
+              background-color: green;
+            }
+        
+            .spanner {
+              margin-left: 10px;
+            }
+            html { overflow-y: hidden; overflow-x: hidden;}
+          </style>
       <div id="graph-container"></div>
     </div>
     <script>
