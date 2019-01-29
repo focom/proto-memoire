@@ -186,19 +186,19 @@ def generateHTML(colors):
               height: 20px;
             }
             #_0{
-              background-color: grey;
+              background-color: #999966;
             }
             #_1{
-              background-color: red;
+              background-color: #cc0000;
             }
             #_2{
-              background-color: yellow;
+              background-color: #ff6600;
             }
             #_3{
-              background-color: orange;
+              background-color: #ffff00;
             }
             #_4{
-              background-color: green;
+              background-color: #00ff00;
             }
         
             .spanner {
